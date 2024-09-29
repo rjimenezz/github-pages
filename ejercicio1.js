@@ -1,6 +1,8 @@
-AFRAME.registerComponent('cambioColor', {
+console.log('cargado');
+AFRAME.registerComponent('cambio-color', {
   
     init: function () {
+        console.log('cambio Color');
         var entity = this.el;
         var color = ['blue', 'yellow', 'green', 'black', 'purple', 'pink', 'orange', 'white', 'brown', 'gray', 'cyan', 'magenta', 'silver', 'gold', 'red'];
         var posicionColor = 0;
@@ -12,7 +14,7 @@ AFRAME.registerComponent('cambioColor', {
             entity.setAttribute('material', 'color', color[posicionColor]);
             posicionColor++;
         }
-    this.nuevoColor();
+    this.intervalo= setInterval(this.nuevoColor, 1000);
     }
   
     
