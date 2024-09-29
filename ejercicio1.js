@@ -14,7 +14,7 @@ AFRAME.registerComponent('cambio-color', {
             entity.setAttribute('material', 'color', color[posicionColor]);
             posicionColor++;
         }
-    this.intervalo= setInterval(this.nuevoColor, 1000);
+    this.intervalo= setInterval(this.nuevoColor, 2000);
     }
   
     
