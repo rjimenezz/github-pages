@@ -1,65 +1,28 @@
-Frame/index.html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Quest Hand Interaction</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
-    <script src="js/main.js"></script>
-</head>
-<body>
-    <a-scene 
-    webxr="optionalFeatures: hand-tracking, local-floor"
-    physics="debug: true">
-        <!-- Camera and hands -->
-        <a-entity position="0 1.6 0">
-            <a-camera></a-camera>
-            <a-entity 
-                oculus-touch-controls="hand: left"
-                hand-tracking-controls="hand: left; modelColor: #ffcccc; modelStyle: dots"
-                visible="true"></a-entity>
-            <a-entity 
-                oculus-touch-controls="hand: right"
-                hand-tracking-controls="hand: right; modelColor: #ffcccc; modelStyle: dots"
-                visible="true"></a-entity>
-        </a-entity>
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@56d77f99494e01b6918612c526ae514f45d178a4/dist/aframe-master.min.js"></script>
+<script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
 
-        <!-- Interactive objects -->
-        <a-box position="-1 1 -2" 
-               color="#4CC3D9" 
-               grabbable="highlight: true"
-               scale="0.3 0.3 0.3"
-               shadow></a-box>
+<script src="../../dist/aframe-hand-tracking-controls-extras-full.js"></script>
+<script src="./components/obelisk.js"></script>
 
-        <a-sphere position="0 1.2 -2" 
-                  radius="0.2" 
-                  color="#EF2D5E" 
-                  grabbable="highlight: true"
-                  shadow></a-sphere>
+<a-scene>
+  <!-- enviro -->
+  <a-entity environment="preset: yavapai"></a-entity>
 
-        <a-cylinder position="1 1 -2" 
-                   radius="0.2" 
-                   height="0.4" 
-                   color="#FFC65D" 
-                   grabbable="highlight: true"
-                   shadow></a-cylinder>
+  <!-- obelisks -->
+  <a-entity position="6 0 -6" obelisk="color: yellow; cubemap: assets/cubemaps/GamlaStan" freeze-workaround></a-entity>
+  <a-entity position="6 0 6" obelisk="color: red; cubemap: assets/cubemaps/UnionSquare" freeze-workaround></a-entity>
+  <a-entity position="-6 0 6" obelisk="color: blue; cubemap: assets/cubemaps/GamlaStan2" freeze-workaround></a-entity>
+  <a-entity position="-6 0 -6" obelisk="color: green; cubemap: assets/cubemaps/Medborgarplatsen" freeze-workaround></a-entity>
 
-        <!-- Environment -->
-        <a-plane position="0 0 -4" 
-                 rotation="-90 0 0" 
-                 width="8" 
-                 height="8" 
-                 color="#7BC8A4"
-                 shadow></a-plane>
-        
-        <!-- Lighting -->
-        <a-light type="ambient" intensity="0.5"></a-light>
-        <a-light type="directional" position="-1 1 1" intensity="0.5" cast-shadow></a-light>
-        
-        <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
-</body>
-</html>
+  <!-- a rig for the entire "user" is required if. Otherwise I would have to meddle in the hand-tracking-controls afaik -->
+  <a-entity id="rig">
+    <a-camera>
+    </a-camera>
+    <a-entity id="left-hand" hand-tracking-controls="hand: left" hand-tracking-extras
+      hand-teleport="rig: #rig; origin: a-camera" >
+    </a-entity>
+    <a-entity id="right-hand" hand-tracking-controls="hand: right" hand-tracking-extras 
+      drag-rotate="rig: #rig">
+    </a-entity>
+  </a-entity>
+</a-scene>
