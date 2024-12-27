@@ -1,28 +1,49 @@
-<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@56d77f99494e01b6918612c526ae514f45d178a4/dist/aframe-master.min.js"></script>
-<script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto A-Frame</title>
+    <!-- Incluye la biblioteca principal de A-Frame -->
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@56d77f99494e01b6918612c526ae514f45d178a4/dist/aframe-master.min.js"></script>
+    <!-- Incluye el componente de entorno de A-Frame -->
+    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+    <!-- Incluye el script para controles de seguimiento de manos -->
+    <script src="../../dist/aframe-hand-tracking-controls-extras-full.js"></script>
+    <!-- Incluye el componente personalizado "obelisk" -->
+    <script src="./components/obelisk.js"></script>
+</head>
+<body>
+    <!-- Define la escena de A-Frame -->
+    <a-scene>
+        <!-- Añade un entorno predefinido -->
+        <a-entity environment="preset: yavapai"></a-entity>
 
-<script src="../../dist/aframe-hand-tracking-controls-extras-full.js"></script>
-<script src="./components/obelisk.js"></script>
+        <!-- Añade entidades "obelisk" en diferentes posiciones -->
+        <a-entity position="6 0 -6" obelisk="color: yellow; cubemap: assets/cubemaps/GamlaStan" freeze-workaround></a-entity>
+        <a-entity position="6 0 6" obelisk="color: red; cubemap: assets/cubemaps/UnionSquare" freeze-workaround></a-entity>
+        <a-entity position="-6 0 6" obelisk="color: blue; cubemap: assets/cubemaps/GamlaStan2" freeze-workaround></a-entity>
+        <a-entity position="-6 0 -6" obelisk="color: green; cubemap: assets/cubemaps/Medborgarplatsen" freeze-workaround></a-entity>
 
-<a-scene>
-  <!-- enviro -->
-  <a-entity environment="preset: yavapai"></a-entity>
+        <!-- Define un rig para el usuario -->
+        <a-entity id="rig">
+            <!-- Añade una cámara para la vista del usuario -->
+            <a-camera></a-camera>
 
-  <!-- obelisks -->
-  <a-entity position="6 0 -6" obelisk="color: yellow; cubemap: assets/cubemaps/GamlaStan" freeze-workaround></a-entity>
-  <a-entity position="6 0 6" obelisk="color: red; cubemap: assets/cubemaps/UnionSquare" freeze-workaround></a-entity>
-  <a-entity position="-6 0 6" obelisk="color: blue; cubemap: assets/cubemaps/GamlaStan2" freeze-workaround></a-entity>
-  <a-entity position="-6 0 -6" obelisk="color: green; cubemap: assets/cubemaps/Medborgarplatsen" freeze-workaround></a-entity>
+            <!-- Añade la mano izquierda con controles de seguimiento de manos -->
+            <a-entity id="left-hand" 
+                      hand-tracking-controls="hand: left" 
+                      hand-tracking-extras
+                      hand-teleport="rig: #rig; origin: a-camera">
+            </a-entity>
 
-  <!-- a rig for the entire "user" is required if. Otherwise I would have to meddle in the hand-tracking-controls afaik -->
-  <a-entity id="rig">
-    <a-camera>
-    </a-camera>
-    <a-entity id="left-hand" hand-tracking-controls="hand: left" hand-tracking-extras
-      hand-teleport="rig: #rig; origin: a-camera" >
-    </a-entity>
-    <a-entity id="right-hand" hand-tracking-controls="hand: right" hand-tracking-extras 
-      drag-rotate="rig: #rig">
-    </a-entity>
-  </a-entity>
-</a-scene>
+            <!-- Añade la mano derecha con controles de seguimiento de manos -->
+            <a-entity id="right-hand" 
+                      hand-tracking-controls="hand: right" 
+                      hand-tracking-extras 
+                      drag-rotate="rig: #rig">
+            </a-entity>
+        </a-entity>
+    </a-scene>
+</body>
+</html>
