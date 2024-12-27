@@ -5,9 +5,8 @@ Frame/index.html
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meta Quest Hand Interaction</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-system@1.4.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="js/main.js"></script>
 </head>
@@ -19,12 +18,12 @@ Frame/index.html
         <a-entity position="0 1.6 0">
             <a-camera></a-camera>
             <a-entity 
-                hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc" 
-                hand-tracking-controls="hand: left"
+                oculus-touch-controls="hand: left"
+                hand-tracking-controls="hand: left; modelColor: #ffcccc; modelStyle: dots"
                 visible="true"></a-entity>
             <a-entity 
-                hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
-                hand-tracking-controls="hand: right"
+                oculus-touch-controls="hand: right"
+                hand-tracking-controls="hand: right; modelColor: #ffcccc; modelStyle: dots"
                 visible="true"></a-entity>
         </a-entity>
 
