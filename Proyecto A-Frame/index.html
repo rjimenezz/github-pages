@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,33 +7,41 @@
     <title>Proyecto A-Frame</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/wmurphyrd/aframe-super-hands-component@master/dist/aframe-super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
 </head>
 <body>
-    <a-scene>
-        <!-- Objetos que se pueden agarrar y mover -->
-        <a-entity geometry="primitive: sphere" material="color: green" position="0 1.5 -1" grabbable dynamic-body></a-entity>
-        <a-entity geometry="primitive: box" material="color: red" position="1 1.5 -1" scale="1 1 1" grabbable dynamic-body></a-entity>
+    <a-scene physics="debug: true">
+        <!-- Suelo -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" static-body></a-plane>
 
-        <!-- Manos con el componente super-hands para interactuar con los objetos -->
-        <a-entity id="leftHand" hand-tracking-controls="hand: left;" super-hands>
-            <a-sphere radius="0.05" color="blue"></a-sphere>
+        <!-- Objetos interactivos -->
+        <a-box position="0 1 -1" color="red" width="0.3" height="0.3" depth="0.3"
+               hoverable grabbable stretchable draggable
+               dynamic-body="mass: 1"></a-box>
+               
+        <a-sphere position="-1 1 -1" color="green" radius="0.15"
+                  hoverable grabbable stretchable draggable
+                  dynamic-body="mass: 1"></a-sphere>
+
+        <!-- Configuración de manos -->
+        <a-entity id="leftHand" hand-tracking-controls="hand: left" 
+                  super-hands="colliderEvent: triggerdown;
+                              colliderEventProperty: pressed;
+                              colliderEndEvent: triggerup;
+                              colliderEndEventProperty: released">
         </a-entity>
-        <a-entity id="rightHand" hand-tracking-controls="hand: right;" super-hands>
-            <a-sphere radius="0.05" color="blue"></a-sphere>
+
+        <a-entity id="rightHand" hand-tracking-controls="hand: right"
+                  super-hands="colliderEvent: triggerdown;
+                              colliderEventProperty: pressed;
+                              colliderEndEvent: triggerup;
+                              colliderEndEventProperty: released">
+        </a-entity>
+
+        <!-- Cámara -->
+        <a-entity position="0 1.6 0">
+            <a-camera look-controls wasd-controls></a-camera>
         </a-entity>
     </a-scene>
-
-    <script>
-        AFRAME.registerComponent('log', {
-            schema: {type: 'string'},
-            init: function () {
-                var stringToLog = this.data;
-                console.log(stringToLog);
-            }
-        });
-
-        document.querySelector('#leftHand').setAttribute('log', 'Left hand initialized');
-        document.querySelector('#rightHand').setAttribute('log', 'Right hand initialized');
-    </script>
 </body>
 </html>
