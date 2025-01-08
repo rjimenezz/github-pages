@@ -10,12 +10,16 @@
 <body>
     <a-scene>
         <!-- Objetos que se pueden agarrar y mover -->
-        <a-entity geometry="primitive: sphere" material="color: green" position="-2 -2 -6" grabbable></a-entity>
-        <a-entity geometry="primitive: box" material="color: red" position="2 -2 -6" scale="1 1 1" grabbable></a-entity>
+        <a-entity geometry="primitive: sphere" material="color: green" position="0 1.5 -1" grabbable></a-entity>
+        <a-entity geometry="primitive: box" material="color: red" position="1 1.5 -1" scale="1 1 1" grabbable></a-entity>
 
         <!-- Manos con el componente super-hands para interactuar con los objetos -->
-        <a-entity id="leftHand" hand-tracking-controls="hand: left;" super-hands></a-entity>
-        <a-entity id="rightHand" hand-tracking-controls="hand: right;" super-hands></a-entity>
+        <a-entity id="leftHand" hand-tracking-controls="hand: left;" super-hands>
+            <a-sphere radius="0.05" color="blue"></a-sphere>
+        </a-entity>
+        <a-entity id="rightHand" hand-tracking-controls="hand: right;" super-hands>
+            <a-sphere radius="0.05" color="blue"></a-sphere>
+        </a-entity>
     </a-scene>
 </body>
 </html>
