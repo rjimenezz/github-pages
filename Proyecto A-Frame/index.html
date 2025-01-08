@@ -21,5 +21,18 @@
             <a-sphere radius="0.05" color="blue"></a-sphere>
         </a-entity>
     </a-scene>
+
+    <script>
+        AFRAME.registerComponent('log', {
+            schema: {type: 'string'},
+            init: function () {
+                var stringToLog = this.data;
+                console.log(stringToLog);
+            }
+        });
+
+        document.querySelector('#leftHand').setAttribute('log', 'Left hand initialized');
+        document.querySelector('#rightHand').setAttribute('log', 'Right hand initialized');
+    </script>
 </body>
 </html>
