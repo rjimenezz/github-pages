@@ -22,12 +22,12 @@
         <!-- Hands with super-hands -->
         <a-entity id="leftHand" 
             hand-tracking-controls="hand: left;"
-            super-hands>
+            super-hands="colliderEvent: grabstart; colliderEndEvent: grabend;">
         </a-entity>
 
         <a-entity id="rightHand" 
             hand-tracking-controls="hand: right;"
-            super-hands>
+            super-hands="colliderEvent: grabstart; colliderEndEvent: grabend;">
         </a-entity>
     </a-scene>
 </body>
