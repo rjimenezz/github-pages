@@ -1,4 +1,4 @@
-Frame/index.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,33 +6,14 @@ Frame/index.html
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto A-Frame</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    
 </head>
 <body>
-    <a-scene physics="debug: true">
-        <!-- Floor -->
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" static-body></a-plane>
+    <a-scene >
+        <a-entity geometry="primitive: box" position="0 1.6 -0.6" material = "color:blue" scale="0.6 0.6 0.6"  grabbable></a-entity>
 
-        <!-- Pushable box -->
-        <a-entity 
-            geometry="primitive: box" 
-            position="0 1.6 -0.6" 
-            material="color: blue" 
-            scale="0.6 0.6 0.6"
-            dynamic-body="mass: 1"
-            grabbable>
-        </a-entity>
-
-        <!-- Hands with grab controls -->
-        <a-entity id="leftHand" 
-            hand-tracking-grab-controls="hand: left;"
-            physics-collider>
-        </a-entity>
-
-        <a-entity id="rightHand" 
-            hand-tracking-grab-controls="hand: right;"
-            physics-collider>
-        </a-entity>
+        <a-entity id="leftHand" hand-tracking-grab-controls="hand: left;"></a-entity>
+        <a-entity id="rightHand" hand-tracking-grab-controls="hand: right;"></a-entity>
     </a-scene>
 </body>
 </html>
