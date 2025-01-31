@@ -1,60 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manipulación de Objetos con Manos en A-Frame</title>
+<html>
+  <head>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@webxr-input-profiles/motion-controllers@1.0.0/dist/motion-controllers.module.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-xr-hands@1.2.0/dist/aframe-xr-hands.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@3.5.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-hand-tracking-component"></script>
     <script>
-        AFRAME.registerComponent('scale-on-pinch', {
-            schema: {
-                factor: {type: 'number', default: 0.01}
-            },
-            init: function () {
-                this.el.addEventListener('pinchstarted', () => {
-                    console.log('Pinch started');
-                });
-                this.el.addEventListener('pinchended', () => {
-                    console.log('Pinch ended');
-                });
-                this.el.addEventListener('pinchmoved', (evt) => {
-                    const currentScale = this.el.getAttribute('scale');
-                    const scaleFactor = evt.detail.spreadChange; // Adjust the divisor for sensitivity
-                    this.el.setAttribute('scale', {
-                        x: currentScale.x + scaleFactor * this.data.factor,
-                        y: currentScale.y + scaleFactor * this.data.factor,
-                        z: currentScale.z + scaleFactor * this.data.factor
-                    });
-                });
+      AFRAME.registerComponent('scale-on-pinching', {
+        schema: { factor: { type: 'number', default: 0.005 } },
+        init: function () {
+          this.el.sceneEl.addEventListener('pinchstarted', (event) => {
+            this.startScale = this.el.object3D.scale.clone();
+            this.pinchStartDistance = event.detail.distance;
+          });
+
+          this.el.sceneEl.addEventListener('pinchmoved', (event) => {
+            if (this.pinchStartDistance) {
+              let scaleFactor =
+                1 + (event.detail.distance - this.pinchStartDistance) * this.data.factor;
+              this.el.object3D.scale.set(
+                this.startScale.x * scaleFactor,
+                this.startScale.y * scaleFactor,
+                this.startScale.z * scaleFactor
+              );
             }
-        });
+          });
+
+          this.el.sceneEl.addEventListener('pinchended', () => {
+            this.pinchStartDistance = null;
+          });
+        },
+      });
     </script>
-</head>
-<body>
-    <a-scene vr-mode-ui="enabled: true" physics webxr="requiredFeatures: [local-floor, hands]">
-
-        <!-- Cámara -->
-        <a-entity camera position="0 1.6 5" look-controls></a-entity>
-
-        <!-- Manos -->
-        <a-entity hand-controls="hand: left" xr-layer="layerType: hand-tracking;"></a-entity>
-        <a-entity hand-controls="hand: right" xr-layer="layerType: hand-tracking;"></a-entity>
-
-        <!-- Objeto interactivo -->
-        <a-box class="interactable" position="0 1.5 -5" rotation="0 45 0" color="#4CC3D9" depth="1" height="1" width="1"
-               scale="1 1 1" scale-on-pinch="factor: 0.01" material="shader: flat;"></a-box>
-
-        <!-- Suelo -->
-        <a-plane position="0 0 0" rotation="-90 0 0" color="#7BC8A4" height="10" width="10"></a-plane>
-
-        <!-- Entorno -->
-        <a-sky color="#ECECEC"></a-sky>
-
+  </head>
+  <body>
+    <a-scene hand-tracking>
+      <a-camera position="0 1.6 2"></a-camera>
+      
+      <a-entity id="right-hand" hand-tracking-controls="hand: right"></a-entity>
+      <a-entity id="left-hand" hand-tracking-controls="hand: left"></a-entity>
+      
+      <a-box id="box" position="0 1 -2" color="blue" scale-on-pinching></a-box>
     </a-scene>
-</body>
+  </body>
 </html>
