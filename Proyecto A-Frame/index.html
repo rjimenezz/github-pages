@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manipulación de Objetos con Manos en A-Frame</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@webxr-input-profiles/motion-controllers@1.0.0/dist/motion-controllers.module.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-xr-hands@1.2.0/dist/aframe-xr-hands.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
@@ -12,7 +13,7 @@
     <script>
         AFRAME.registerComponent('scale-on-pinch', {
             schema: {
-                factor: {type: 'number', default: 1.1}
+                factor: {type: 'number', default: 0.01}
             },
             init: function () {
                 this.el.addEventListener('pinchstarted', () => {
@@ -23,7 +24,7 @@
                 });
                 this.el.addEventListener('pinchmoved', (evt) => {
                     const currentScale = this.el.getAttribute('scale');
-                    const scaleFactor = evt.detail.spreadChange / 100; // Adjust the divisor for sensitivity
+                    const scaleFactor = evt.detail.spreadChange; // Adjust the divisor for sensitivity
                     this.el.setAttribute('scale', {
                         x: currentScale.x + scaleFactor * this.data.factor,
                         y: currentScale.y + scaleFactor * this.data.factor,
@@ -35,14 +36,14 @@
     </script>
 </head>
 <body>
-    <a-scene vr-mode-ui="enabled: true" physics hands-controls>
+    <a-scene vr-mode-ui="enabled: true" physics webxr="requiredFeatures: [local-floor, hands]">
 
         <!-- Cámara -->
         <a-entity camera position="0 1.6 5" look-controls></a-entity>
 
         <!-- Manos -->
-        <a-entity hand-controls="hand: left"></a-entity>
-        <a-entity hand-controls="hand: right"></a-entity>
+        <a-entity hand-controls="hand: left" xr-layer="layerType: hand-tracking;"></a-entity>
+        <a-entity hand-controls="hand: right" xr-layer="layerType: hand-tracking;"></a-entity>
 
         <!-- Objeto interactivo -->
         <a-box class="interactable" position="0 1.5 -5" rotation="0 45 0" color="#4CC3D9" depth="1" height="1" width="1"
@@ -51,7 +52,7 @@
         <!-- Suelo -->
         <a-plane position="0 0 0" rotation="-90 0 0" color="#7BC8A4" height="10" width="10"></a-plane>
 
-        <!-- Entorno ->
+        <!-- Entorno -->
         <a-sky color="#ECECEC"></a-sky>
 
     </a-scene>
