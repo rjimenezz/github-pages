@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manipulación de Objetos en A-Frame</title>
+    <title>Manipulación de Objetos con Manos en A-Frame</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-xr-hands@1.2.0/dist/aframe-xr-hands.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.loaders.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@3.5.0/dist/aframe-physics-system.min.js"></script>
     <script>
-        AFRAME.registerComponent('scale-on-interact', {
+        AFRAME.registerComponent('scale-on-pinch', {
             schema: {
                 factor: {type: 'number', default: 1.1}
             },
             init: function () {
-                this.el.addEventListener('click', () => {
+                this.el.addEventListener('pinchstarted', () => {
+                    console.log('Pinch started');
+                });
+                this.el.addEventListener('pinchended', () => {
+                    console.log('Pinch ended');
+                });
+                this.el.addEventListener('pinchmoved', (evt) => {
                     const currentScale = this.el.getAttribute('scale');
+                    const scaleFactor = evt.detail.spreadChange / 100; // Adjust the divisor for sensitivity
                     this.el.setAttribute('scale', {
-                        x: currentScale.x * this.data.factor,
-                        y: currentScale.y * this.data.factor,
-                        z: currentScale.z * this.data.factor
+                        x: currentScale.x + scaleFactor * this.data.factor,
+                        y: currentScale.y + scaleFactor * this.data.factor,
+                        z: currentScale.z + scaleFactor * this.data.factor
                     });
                 });
             }
@@ -27,18 +35,18 @@
     </script>
 </head>
 <body>
-    <a-scene vr-mode-ui="enabled: true" physics>
+    <a-scene vr-mode-ui="enabled: true" physics hands-controls>
 
         <!-- Cámara -->
-        <a-entity camera position="0 1.6 5" look-controls wasd-controls></a-entity>
+        <a-entity camera position="0 1.6 5" look-controls></a-entity>
 
-        <!-- Controladores -->
-        <a-entity laser-controls="hand: left" raycaster="far: 10; objects: .interactable" line="color: red;"></a-entity>
-        <a-entity laser-controls="hand: right" raycaster="far: 10; objects: .interactable" line="color: blue;"></a-entity>
+        <!-- Manos -->
+        <a-entity hand-controls="hand: left"></a-entity>
+        <a-entity hand-controls="hand: right"></a-entity>
 
         <!-- Objeto interactivo -->
         <a-box class="interactable" position="0 1.5 -5" rotation="0 45 0" color="#4CC3D9" depth="1" height="1" width="1"
-               scale="1 1 1" scale-on-interact="factor: 1.1" material="shader: flat;"></a-box>
+               scale="1 1 1" scale-on-pinch="factor: 0.01" material="shader: flat;"></a-box>
 
         <!-- Suelo -->
         <a-plane position="0 0 0" rotation="-90 0 0" color="#7BC8A4" height="10" width="10"></a-plane>
